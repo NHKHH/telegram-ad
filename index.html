@@ -3,203 +3,344 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Telegram Group Ad</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Taviraj:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Telegram Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Taviraj:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --gold: #f5c842;
-    --deep: #0a0a14;
-    --mid: #12122a;
-    --accent: #29d9c2;
-    --soft: #c8c8e8;
-  }
+:root {
+  --gold: #f5c842;
+  --gold2: #f7a800;
+  --deep: #05050f;
+  --accent: #29d9c2;
+  --soft: #c8c8e8;
+  --card-bg: rgba(16,16,42,0.85);
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    background: var(--deep);
-    font-family: 'Taviraj', serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    overflow-x: hidden;
-  }
+body {
+  background: var(--deep);
+  font-family: 'Taviraj', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  perspective: 1200px;
+}
 
-  .bg-orbs {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.18;
-    animation: pulse 7s ease-in-out infinite alternate;
-  }
-  .orb1 { width: 420px; height: 420px; background: #4a2fff; top: -100px; left: -100px; animation-delay: 0s; }
-  .orb2 { width: 300px; height: 300px; background: #29d9c2; bottom: -80px; right: -80px; animation-delay: 2s; }
-  .orb3 { width: 200px; height: 200px; background: #f5c842; top: 40%; left: 60%; animation-delay: 4s; }
+/* ── CANVAS STARS ── */
+#stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
 
-  @keyframes pulse {
-    from { transform: scale(1); opacity: 0.15; }
-    to { transform: scale(1.15); opacity: 0.25; }
-  }
+/* ── FLOATING ORBS ── */
+.orbs {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  animation: floatOrb linear infinite;
+  opacity: 0;
+}
+.orb1 { width: 500px; height: 500px; background: radial-gradient(circle, #3a1aff 0%, transparent 70%); animation-duration: 18s; animation-delay: 0s; }
+.orb2 { width: 350px; height: 350px; background: radial-gradient(circle, #29d9c2 0%, transparent 70%); animation-duration: 22s; animation-delay: -7s; }
+.orb3 { width: 280px; height: 280px; background: radial-gradient(circle, #f5c842 0%, transparent 70%); animation-duration: 15s; animation-delay: -12s; }
+.orb4 { width: 200px; height: 200px; background: radial-gradient(circle, #ff3aaa 0%, transparent 70%); animation-duration: 19s; animation-delay: -4s; }
 
-  .wrapper {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-    max-width: 600px;
-    width: 100%;
-  }
+@keyframes floatOrb {
+  0%   { transform: translate(-10vw, 110vh) scale(0.8); opacity: 0; }
+  10%  { opacity: 0.2; }
+  90%  { opacity: 0.15; }
+  100% { transform: translate(110vw, -10vh) scale(1.2); opacity: 0; }
+}
 
-  /* LANGUAGE CARDS */
-  .card {
-    background: linear-gradient(135deg, #16163a 60%, #1e1e4a);
-    border-radius: 24px;
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 36px 32px;
-    box-shadow: 0 8px 48px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.07);
-    animation: fadeUp 0.7s ease both;
-  }
-  .card:nth-child(2) { animation-delay: 0.15s; }
-  .card:nth-child(3) { animation-delay: 0.3s; }
+/* ── WRAPPER ── */
+.wrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 48px 20px 60px;
+  max-width: 640px;
+  margin: 0 auto;
+}
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+/* ── HEADER ── */
+.header {
+  text-align: center;
+  animation: dropIn 1s cubic-bezier(.22,1,.36,1) both;
+}
+.header-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, #fff 20%, var(--gold) 60%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-shadow: none;
+  filter: drop-shadow(0 0 30px rgba(245,200,66,0.4));
+}
+.header-sub {
+  margin-top: 10px;
+  color: rgba(200,200,232,0.6);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
 
-  .lang-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(245,200,66,0.12);
-    border: 1px solid rgba(245,200,66,0.3);
-    border-radius: 100px;
-    padding: 5px 14px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 20px;
-  }
-  .flag { font-size: 1.1rem; }
+@keyframes dropIn {
+  from { opacity: 0; transform: translateY(-40px) rotateX(20deg); }
+  to   { opacity: 1; transform: translateY(0) rotateX(0); }
+}
 
-  .card h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.55rem;
-    font-weight: 900;
-    color: #fff;
-    line-height: 1.3;
-    margin-bottom: 18px;
-  }
-  .card h2 span { color: var(--gold); }
+/* ── CARDS ── */
+.card {
+  width: 100%;
+  background: var(--card-bg);
+  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 36px 30px 28px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.04) inset,
+    0 24px 64px rgba(0,0,0,0.6),
+    0 0 80px rgba(41,217,194,0.04);
+  transform-style: preserve-3d;
+  transform: perspective(800px) rotateX(0deg) rotateY(0deg);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  animation: riseCard 0.9s cubic-bezier(.22,1,.36,1) both;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
 
-  .features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 22px;
-  }
-  .features li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    color: var(--soft);
-    font-size: 0.97rem;
-    line-height: 1.5;
-  }
-  .icon-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 10px;
-    background: rgba(41,217,194,0.12);
-    font-size: 1rem;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
+/* shimmer sweep */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 50%, transparent 60%);
+  animation: shimmer 4s ease infinite;
+  pointer-events: none;
+}
+@keyframes shimmer {
+  0%   { left: -100%; }
+  40%  { left: 160%; }
+  100% { left: 160%; }
+}
 
-  .cta-btn {
-    display: block;
-    width: 100%;
-    text-align: center;
-    background: linear-gradient(90deg, #f5c842, #f7a800);
-    color: #0a0a14;
-    font-family: 'Taviraj', serif;
-    font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 0.03em;
-    padding: 14px 28px;
-    border-radius: 14px;
-    text-decoration: none;
-    box-shadow: 0 4px 24px rgba(245,200,66,0.3);
-    transition: transform 0.2s, box-shadow 0.2s;
-    margin-top: 4px;
-  }
-  .cta-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 36px rgba(245,200,66,0.5);
-  }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.4s; }
+.card:nth-child(4) { animation-delay: 0.6s; }
 
-  /* RTL for Persian */
-  .rtl {
-    direction: rtl;
-    text-align: right;
-  }
-  .rtl .features li {
-    flex-direction: row-reverse;
-  }
-  .rtl h2 {
-    font-family: 'Taviraj', serif;
-  }
+.card:hover {
+  box-shadow:
+    0 0 0 1px rgba(245,200,66,0.15) inset,
+    0 32px 80px rgba(0,0,0,0.7),
+    0 0 60px rgba(245,200,66,0.08);
+}
 
-  /* Chinese font override */
-  .zh h2, .zh .features li {
-    font-family: 'Taviraj', 'Segoe UI', sans-serif;
-  }
+@keyframes riseCard {
+  from { opacity: 0; transform: perspective(800px) translateY(60px) rotateX(8deg); }
+  to   { opacity: 1; transform: perspective(800px) translateY(0) rotateX(0deg); }
+}
 
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    color: rgba(255,255,255,0.18);
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-  }
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: rgba(255,255,255,0.09);
-  }
+/* glow line top */
+.card-glow {
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+
+.lang-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(245,200,66,0.1);
+  border: 1px solid rgba(245,200,66,0.25);
+  border-radius: 100px;
+  padding: 5px 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+  box-shadow: 0 0 12px rgba(245,200,66,0.1);
+}
+
+.card h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.35;
+  margin-bottom: 20px;
+}
+.card h2 span { color: var(--gold); }
+
+.features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 26px;
+}
+.features li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--soft);
+  font-size: 0.96rem;
+  line-height: 1.5;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.features li:hover {
+  background: rgba(41,217,194,0.06);
+  border-color: rgba(41,217,194,0.15);
+  transform: translateX(4px);
+}
+.icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(41,217,194,0.15), rgba(245,200,66,0.08));
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold2));
+  color: #08080f;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  padding: 15px 28px;
+  border-radius: 16px;
+  text-decoration: none;
+  box-shadow:
+    0 4px 20px rgba(245,200,66,0.35),
+    0 1px 0 rgba(255,255,255,0.3) inset;
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.cta-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 60%);
+  pointer-events: none;
+}
+.cta-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 40px rgba(245,200,66,0.55);
+  filter: brightness(1.08);
+}
+.cta-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* RTL */
+.rtl { direction: rtl; text-align: right; }
+.rtl .features li { flex-direction: row-reverse; }
+.rtl .features li:hover { transform: translateX(-4px); }
+
+/* DIVIDER */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: rgba(255,255,255,0.15);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  width: 100%;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  color: rgba(255,255,255,0.2);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  animation: riseCard 1s ease 0.8s both;
+}
+
+/* PARTICLE DOTS */
+.particle {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  animation: particleDrift linear infinite;
+  opacity: 0;
+}
+@keyframes particleDrift {
+  0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.3; }
+  100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+}
 </style>
 </head>
 <body>
 
-<div class="bg-orbs">
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
+<canvas id="stars"></canvas>
+
+<div class="orbs">
+  <div class="orb orb1" style="left:5%;top:0"></div>
+  <div class="orb orb2" style="left:60%;top:0"></div>
+  <div class="orb orb3" style="left:30%;top:0"></div>
+  <div class="orb orb4" style="left:80%;top:0"></div>
 </div>
 
 <div class="wrapper">
 
-  <!-- 🇺🇸 ENGLISH -->
-  <div class="card">
-    <div class="lang-badge"><span class="flag">🇺🇸</span> English</div>
+  <div class="header">
+    <div class="header-title">✦ Telegram Marketplace ✦</div>
+    <div class="header-sub">🇺🇸 English &nbsp;·&nbsp; 🇨🇳 中文 &nbsp;·&nbsp; 🇮🇷 فارسی</div>
+  </div>
+
+  <!-- ENGLISH -->
+  <div class="card" id="c1">
+    <div class="card-glow"></div>
+    <div class="lang-badge">🇺🇸 &nbsp;English</div>
     <h2>Welcome to the <span>Ultimate Telegram Marketplace</span> 🎉</h2>
     <ul class="features">
       <li><div class="icon-wrap">📱</div> Buy & sell Telegram channel and group usernames</li>
@@ -207,14 +348,17 @@
       <li><div class="icon-wrap">🎁</div> Exclusive NFT gifts & digital collectibles</li>
       <li><div class="icon-wrap">✨</div> Much more waiting for you inside!</li>
     </ul>
-    <a class="cta-btn" href="https://t.me/+ejByCmqWFok1YjU8" target="_blank">👉 Join the Group Now</a>
+    <a class="cta-btn" href="https://t.me/+ejByCmqWFok1YjU8" target="_blank">
+      <span>👉</span> Join the Group Now
+    </a>
   </div>
 
   <div class="divider">3 languages · 1 community</div>
 
-  <!-- 🇨🇳 CHINESE -->
-  <div class="card zh">
-    <div class="lang-badge"><span class="flag">🇨🇳</span> 中文</div>
+  <!-- CHINESE -->
+  <div class="card" id="c2">
+    <div class="card-glow"></div>
+    <div class="lang-badge">🇨🇳 &nbsp;中文</div>
     <h2>欢迎加入<span>顶级电报交易社群</span> 🎉</h2>
     <ul class="features">
       <li><div class="icon-wrap">📱</div> 买卖 Telegram 频道号与群组号</li>
@@ -222,14 +366,17 @@
       <li><div class="icon-wrap">🎁</div> 独家 NFT 礼品与数字收藏品</li>
       <li><div class="icon-wrap">✨</div> 更多精彩内容等你来发现！</li>
     </ul>
-    <a class="cta-btn" href="https://t.me/+ejByCmqWFok1YjU8" target="_blank">👉 立即加入群组</a>
+    <a class="cta-btn" href="https://t.me/+ejByCmqWFok1YjU8" target="_blank">
+      <span>👉</span> 立即加入群组
+    </a>
   </div>
 
   <div class="divider">سه زبان · یک جامعه</div>
 
-  <!-- 🇮🇷 PERSIAN -->
-  <div class="card rtl">
-    <div class="lang-badge"><span class="flag">🇮🇷</span> فارسی</div>
+  <!-- PERSIAN -->
+  <div class="card rtl" id="c3">
+    <div class="card-glow"></div>
+    <div class="lang-badge">🇮🇷 &nbsp;فارسی</div>
     <h2>به <span>بهترین بازار تلگرامی</span> خوش آمدید 🎉</h2>
     <ul class="features">
       <li><div class="icon-wrap">📱</div> خرید و فروش یوزرنیم کانال و گروه تلگرام</li>
@@ -237,9 +384,132 @@
       <li><div class="icon-wrap">🎁</div> هدایای NFT اختصاصی و کلکسیون‌های دیجیتال</li>
       <li><div class="icon-wrap">✨</div> و محتوای بیشتری که منتظرته!</li>
     </ul>
-    <a class="cta-btn" href="https://t.me/+ejByCmqWFok1YjU8" target="_blank">👉 همین الان بپیوند</a>
+    <a class="cta-btn" href="https://t.me/+ejByCmqWFok1YjU8" target="_blank">
+      <span>👉</span> همین الان بپیوند
+    </a>
   </div>
 
+  <div class="footer">✦ &nbsp; Powered by Telegram &nbsp; ✦</div>
 </div>
+
+<script>
+// ── STAR CANVAS ──
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 160; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.2 + 0.2,
+      speed: Math.random() * 0.3 + 0.05,
+      opacity: Math.random(),
+      twinkleSpeed: Math.random() * 0.02 + 0.005,
+      twinkleDir: Math.random() > 0.5 ? 1 : -1,
+    });
+  }
+}
+initStars();
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    s.opacity += s.twinkleSpeed * s.twinkleDir;
+    if (s.opacity >= 1 || s.opacity <= 0.05) s.twinkleDir *= -1;
+    s.y -= s.speed;
+    if (s.y < -2) s.y = canvas.height + 2;
+
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${s.opacity * 0.7})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+
+// ── 3D TILT ON MOUSE/TOUCH ──
+function tilt3D(card) {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    card.style.transform = `perspective(800px) rotateX(${-dy * 7}deg) rotateY(${dx * 10}deg) scale(1.02)`;
+    card.style.boxShadow = `
+      ${-dx * 20}px ${-dy * 20}px 60px rgba(0,0,0,0.5),
+      0 0 80px rgba(245,200,66,0.1)
+    `;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) scale(1)';
+    card.style.boxShadow = '';
+    card.style.transition = 'transform 0.5s ease, box-shadow 0.5s ease';
+    setTimeout(() => card.style.transition = 'transform 0.15s ease, box-shadow 0.15s ease', 500);
+  });
+
+  // touch tilt
+  card.addEventListener('touchmove', e => {
+    const t = e.touches[0];
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (t.clientX - cx) / (rect.width / 2);
+    const dy = (t.clientY - cy) / (rect.height / 2);
+    card.style.transform = `perspective(800px) rotateX(${-dy * 5}deg) rotateY(${dx * 7}deg) scale(1.02)`;
+  }, { passive: true });
+  card.addEventListener('touchend', () => {
+    card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) scale(1)';
+    card.style.transition = 'transform 0.5s ease';
+  });
+}
+
+document.querySelectorAll('.card').forEach(tilt3D);
+
+// ── FLOATING PARTICLES ──
+function spawnParticle() {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 4 + 1;
+  const colors = ['#f5c842', '#29d9c2', '#ffffff', '#a78bfa'];
+  p.style.cssText = `
+    width: ${size}px;
+    height: ${size}px;
+    left: ${Math.random() * 100}vw;
+    bottom: -10px;
+    background: ${colors[Math.floor(Math.random() * colors.length)]};
+    animation-duration: ${Math.random() * 10 + 8}s;
+    animation-delay: ${Math.random() * 5}s;
+    box-shadow: 0 0 ${size * 2}px currentColor;
+  `;
+  document.body.appendChild(p);
+  setTimeout(() => p.remove(), 18000);
+}
+
+setInterval(spawnParticle, 600);
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'perspective(800px) translateY(0) rotateX(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.card').forEach(c => observer.observe(c));
+</script>
 </body>
 </html>
